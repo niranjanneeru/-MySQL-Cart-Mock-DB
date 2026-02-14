@@ -34,10 +34,10 @@ mysql://diya:diya_password@localhost:3306/kvkart
 
 ```bash
 # Using docker exec
-docker exec -it kvkart-db mysql -u diya -p diya_password kvkart
+docker exec -it kvkart-db mysql -u diya -pdiya_password kvkart
 
 # Using local mysql client
-mysql -h 127.0.0.1 -P 3306 -u diya -p diya_password kvkart
+mysql -h 127.0.0.1 -P 3306 -u diya -pdiya_password kvkart
 ```
 
 ### Connect from Python

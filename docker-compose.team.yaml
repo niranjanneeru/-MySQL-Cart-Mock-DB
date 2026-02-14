@@ -1,15 +1,13 @@
 version: "3.8"
 
 # ============================================================
-# BUILD-SIDE: For you (Niranjan) to build, test, and publish
-# Teams use docker-compose.team.yaml instead
+# KV Kart Database — Workshop Setup
+# Just run: docker compose up -d
 # ============================================================
 
 services:
   kvkart-db:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKER_HUB_USER}/kvkart-db:latest    # ← Replace with your Docker Hub username
     container_name: kvkart-db
     ports:
       - "3306:3306"
@@ -17,9 +15,6 @@ services:
       - kvkart_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: kvkart_root
-      MYSQL_DATABASE: kvkart
-      MYSQL_USER: diya
-      MYSQL_PASSWORD: diya_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pkvkart_root"]
       interval: 10s
