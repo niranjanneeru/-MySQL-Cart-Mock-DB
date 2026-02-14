@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  kvkart-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kvkart-db
+    ports:
+      - "3306:3306"
+    volumes:
+      # Named volume for MySQL data persistence
+      # First run: MySQL sees empty volume → runs all init scripts → writes data here
+      # Subsequent runs: MySQL sees existing data → skips init scripts → starts instantly
+      - kvkart_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: kvkart_root
+      MYSQL_DATABASE: kvkart
+      MYSQL_USER: diya
+      MYSQL_PASSWORD: diya_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pkvkart_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  kvkart_data:
+    name: kvkart_data
+    # To force a fresh rebuild from SQL files:
+    #   docker compose down -v    (removes the volume)
+    #   docker compose up --build (rebuilds and re-initializes)
